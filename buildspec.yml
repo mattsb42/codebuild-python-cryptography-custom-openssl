@@ -1,0 +1,17 @@
+version: 0.1
+
+phases:
+    install:
+        commands:
+            - yum install -y gcc libffi-devel python-devel openssl-devel
+            - pip install -U pip virtualenv wheel
+    build:
+        commands:
+            - bash build_cryptography_custom_openssl.sh
+            - mkdir site-packages
+            - pip install --target=site-packages --use-wheel --no-index --find-links=`pwd` cryptography
+
+artifacts:
+    files:
+        - site-packages/**/*
+        - lambda_entry.py
