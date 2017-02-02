@@ -1,0 +1,81 @@
+Description: Creates CodeBuild resources and exports reference values for a project.
+Parameters:
+    ProjectName:
+        Type: String
+        Description: Project name to use for CodeBuild Project and export names
+    GithubSourceLocation:
+        Type: String
+        Description: Github HTTPS clone URL, including user name and personal access token.
+    OutputS3Bucket:
+        Type: String
+        Description: S3 Bucket to which to send output
+    OutputS3Key:
+        Type: String
+        Description: S3 Key to which to send output
+Resources:
+    ProjectRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    -
+                        Effect: Allow
+                        Principal:
+                            Service: codebuild.amazonaws.com
+                        Action: sts:AssumeRole
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+            Policies:
+                -
+                    PolicyName: CodeBuildS3PutAccess
+                    PolicyDocument:
+                        Version: 2012-10-17
+                        Statement:
+                            -
+                                Effect: Allow
+                                Action: s3:ListBucket
+                                Resource: !Sub arn:aws:s3:::${OutputS3Bucket}
+                            -
+                                Effect: Allow
+                                Action: s3:PutObject
+                                Resource: !Sub arn:aws:s3:::${OutputS3Bucket}/${OutputS3Key}
+    Project:
+        Type: AWS::CodeBuild::Project
+        Properties:
+            Description: !Sub ${ProjectName} project for building artifacts from github repo
+            Source:
+                Type: GITHUB
+                Location: !Ref GithubSourceLocation
+            Name: !Ref ProjectName
+            ServiceRole: !GetAtt ProjectRole.Arn
+            Environment:
+                Type: LINUX_CONTAINER
+                Image: aws/codebuild/eb-python-2.7-amazonlinux-64:2.1.6
+                ComputeType: BUILD_GENERAL1_SMALL
+            Artifacts:
+                Type: S3
+                Location: !Ref OutputS3Bucket
+                Name: !Ref OutputS3Key
+                Packaging: ZIP
+Outputs:
+    ProjectName:
+        Description: Name of CodeBuild Project
+        Value: !Ref Project
+        Export:
+            Name: !Sub ${ProjectName}BuildProjectName
+    ProjectArn:
+        Description: Arn of CodeBuild Project
+        Value: !GetAtt Project.Arn
+        Export:
+            Name: !Sub ${ProjectName}BuildProjectArn
+    SourceCodeBucket:
+        Description: S3 Bucket containing source code.
+        Value: !Ref OutputS3Bucket
+        Export:
+            Name: !Sub ${ProjectName}SourceCodeBucket
+    BuildArtifactKey:
+        Description: S3 Key containing build artifact
+        Value: !Ref OutputS3Key
+        Export:
+            Name: !Sub ${ProjectName}BuildArtifactKey
