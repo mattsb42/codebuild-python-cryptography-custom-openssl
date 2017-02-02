@@ -32,4 +32,4 @@ CodeBuild build specification file.
 Shell script to handle custom OpenSSL compilation and cryptography wheel build.
 
 ### lambda_entry.py
-Lambda Function file; prints out the version of OpenSSL used.
+Lambda Function code.  Prints out the version of OpenSSL used.
