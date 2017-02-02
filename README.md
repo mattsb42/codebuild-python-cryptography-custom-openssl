@@ -1,5 +1,6 @@
 # codebuild-python-cryptography-custom-openssl
-Example CodeBuild setup to build and bundle the Python cryptography library with a custom
+Example CodeBuild setup to build and bundle the Python [cryptography library](
+https://cryptography.io/) with a custom
 OpenSSL version for deployment to AWS Lambda.
 
 As of this writing, the default Lambda runtime includes OpenSSL 1.0.1k-fips.
@@ -14,6 +15,8 @@ version of OpenSSL.
 Built libraries are built into a "site-packages" directory, which must be added to `sys.path`
 in the Lambda Python module referencing those libraries.
 
+The `OPENSSL_VERSION` environment variable can be set to the desired OpenSSL version.  In the supplied
+build script, it defaults to `1.1.0d`.
 
 ## Contents
 
