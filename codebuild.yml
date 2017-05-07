@@ -15,7 +15,7 @@ Parameters:
     OpenSSLVersion:
         Type: String
         Description: Default version of OpenSSL to use in build
-        Default: ''
+        Default: '1.1.0e'
     PythonVersion:
         Type: String
         Description: Default version of Python to use in build
