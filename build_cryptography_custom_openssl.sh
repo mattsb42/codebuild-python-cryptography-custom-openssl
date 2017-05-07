@@ -4,7 +4,7 @@ if [ -z ${OPENSSL_VERSION} ];then
     OPENSSL_VERSION='1.1.0d'
 fi
 CWD=$(pwd)
-virtualenv env
+virtualenv env -p python$PYTHON_VERSION
 . env/bin/activate
 pip install -U setuptools
 pip install -U wheel pip
