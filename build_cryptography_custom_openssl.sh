@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 if [ -z ${OPENSSL_VERSION} ];then
-    OPENSSL_VERSION='1.1.0d'
+    OPENSSL_VERSION='1.1.0e'
 fi
 CWD=$(pwd)
 virtualenv env -p python$PYTHON_VERSION

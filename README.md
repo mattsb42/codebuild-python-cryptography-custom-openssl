@@ -20,7 +20,7 @@ The following environment variables can be set in the CodeBuild environment, eit
 when deploying the CloudFormation template or manually for a single build.
 
 ### OPENSSL_VERSION
-Sets the version of OpenSSL which should be packaged into the build.  Defaults to `1.1.0d`.
+Sets the version of OpenSSL which should be packaged into the build.  Defaults to `1.1.0e`.
 
 ### PYTHON_VERSION
 Sets the version of Python to use when building the artifacts.  Defaults to `2.7`.
