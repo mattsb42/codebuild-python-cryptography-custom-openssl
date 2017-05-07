@@ -12,6 +12,14 @@ Parameters:
     OutputS3Key:
         Type: String
         Description: S3 Key to which to send output
+    OpenSSLVersion:
+        Type: String
+        Description: Default version of OpenSSL to use in build
+        Default: ''
+    PythonVersion:
+        Type: String
+        Description: Default version of Python to use in build
+        Default: 2.7
 Resources:
     ProjectRole:
         Type: AWS::IAM::Role
@@ -53,6 +61,13 @@ Resources:
                 Type: LINUX_CONTAINER
                 Image: aws/codebuild/eb-python-2.7-amazonlinux-64:2.1.6
                 ComputeType: BUILD_GENERAL1_SMALL
+                EnvironmentVariables:
+                    -
+                        Name: OPENSSL_VERSION
+                        Value: !Ref OpenSSLVersion
+                    -
+                        Name: PYTHON_VERSION
+                        Value: !Ref PythonVersion
             Artifacts:
                 Type: S3
                 Location: !Ref OutputS3Bucket

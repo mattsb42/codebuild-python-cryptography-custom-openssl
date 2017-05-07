@@ -1,5 +1,5 @@
 # codebuild-python-cryptography-custom-openssl
-As of this writing, the default [AWS Lambda][2] runtime includes OpenSSL 1.0.1k-fips.  There
+As of this writing, the default [AWS Lambda][2] runtime includes OpenSSL 1.0.1k-fips. There
 are many use cases where a newer version of OpenSSL is desirable or required, but this is
 complicated for Python developers both by the build required as well as the integration of
 that specific build with the [cryptography library][1].
@@ -11,16 +11,24 @@ desired version of OpenSSL.
 Built libraries are built into a "site-packages" directory, which must be added to `sys.path`
 in the Lambda Python module referencing those libraries.
 
-The `OPENSSL_VERSION` environment variable can be set to the desired OpenSSL version.  In the
-supplied build script, it defaults to `1.1.0d`.
-
 This example build can be extended with your project's build requirements or tiered with [AWS
 CodePipeline][4] to feed into your other builds.
 
-## Contents
+## Configuration
+
+The following environment variables can be set in the CodeBuild environment, either as defaults
+when deploying the CloudFormation template or manually for a single build.
+
+### OPENSSL_VERSION
+Sets the version of OpenSSL which should be packaged into the build.  Defaults to `1.1.0d`.
+
+### PYTHON_VERSION
+Sets the version of Python to use when building the artifacts.  Defaults to `2.7`.
+
+## Package Contents
 
 ### codebuild.yml
-Cloudformation template to set up CodeBuild resources to build this repo.
+CloudFormation template to set up CodeBuild resources to build this repo.
 
 The __GithubSourceLocation__ parameter should be in the form of `https://<username>:<personal_token>@github.com/<path_to_repo.git>`
 
